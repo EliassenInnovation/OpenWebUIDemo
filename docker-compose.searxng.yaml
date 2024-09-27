@@ -6,6 +6,7 @@ services:
       RAG_WEB_SEARCH_RESULT_COUNT: 3
       RAG_WEB_SEARCH_CONCURRENT_REQUESTS: 10
       SEARXNG_QUERY_URL: "http://searxng:8080/search?q=<query>"
+      ENABLE_RAG_HYBRID_SEARCH: True
 
   searxng:
     image: searxng/searxng:latest

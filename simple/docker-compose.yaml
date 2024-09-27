@@ -1,0 +1,88 @@
+services:
+  open-webui:
+    image: 'ghcr.io/open-webui/open-webui:main'
+    volumes:
+      - './docs:/app/backend/data/docs:rw'
+    ports:
+      - '3003:8080'
+    environment:
+      DEFAULT_MODELS: 'llama3-70b-8192'
+      OPENAI_API_BASE_URLS: 'https://api.groq.com/openai/v1'
+      OPENAI_API_KEYS: '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'
+      PDF_EXTRACT_IMAGES: True
+
+      ENABLE_RAG_WEB_SEARCH: True
+      RAG_WEB_SEARCH_ENGINE: "searxng"
+      RAG_WEB_SEARCH_RESULT_COUNT: 3
+      RAG_WEB_SEARCH_CONCURRENT_REQUESTS: 10
+      SEARXNG_QUERY_URL: "http://open-webui-simple-searxng-1:8080/search?q=<query>"
+      ENABLE_RAG_HYBRID_SEARCH: True
+      
+      USE_TIKA: True
+      TIKA_SERVER_URL: "http://open-webui-simple-tika-1:9998"
+      CONTENT_EXTRACTION_ENGINE: tika
+
+    restart: 'unless-stopped'   
+
+  searxng:
+    image: searxng/searxng:latest
+    ports:
+      - "8080:8080"
+    working_dir: /etc/searxng
+    command: >
+      /bin/sh -c "
+      echo '
+      use_default_settings: true
+      server:
+        secret_key: \"f9e603d4191caab069b021fa0568391a33c8a837b470892c64461b5dd12464f4\"
+        limiter: false
+        image_proxy: true
+        port: 8080
+        bind_address: \"0.0.0.0\"
+      ui:
+        static_use_hash: true
+      search:
+        safe_search: 0
+        autocomplete: \"\"
+        default_lang: \"\"
+        formats:
+          - html
+          - json
+      ' > /etc/searxng/settings.yml && echo '
+      [uwsgi]
+      uid = searxng
+      gid = searxng
+      workers = %k
+      threads = 4
+      chmod-socket = 666
+      single-interpreter = true
+      master = true
+      plugin = python3
+      lazy-apps = true
+      enable-threads = 4
+      module = searx.webapp
+      pythonpath = /usr/local/searxng/
+      chdir = /usr/local/searxng/searx/
+      auto-procname = true
+      disable-logging = true
+      log-5xx = true
+      buffer-size = 8192
+      add-header = Connection: close
+      static-map = /static=/usr/local/searxng/searx/static
+      static-expires = /* 86400
+      static-gzip-all = True
+      offload-threads = 4
+      ' > /etc/searxng/uwsgi.ini && echo '
+      [botdetection.ip_limit]
+      # activate link_token method in the ip_limit method
+      link_token = true
+      ' > /etc/searxng/limiter.toml && searxng"      
+    restart: always
+
+  tika:
+    image: apache/tika:latest-full
+    ports:
+      - "9998:9998"
+    restart: always
+
+  
