@@ -1,0 +1,162 @@
+id: /subscriptions/2d8d9e9c-8f2a-4dbe-a6c8-0367e15fd061/resourceGroups/Personal.MWhitted/providers/Microsoft.App/containerapps/open-webui
+identity:
+  type: None
+location: West US 2
+name: open-webui
+properties:
+  configuration:
+    activeRevisionsMode: Single
+    dapr: null
+    identitySettings: []
+    ingress:
+      additionalPortMappings: null
+      allowInsecure: false
+      clientCertificateMode: null
+      corsPolicy: null
+      customDomains: null
+      exposedPort: 0
+      external: true
+      fqdn: open-webui.wonderfulsmoke-f1c0b2f0.westus2.azurecontainerapps.io
+      ipSecurityRestrictions: null
+      stickySessions: null
+      targetPort: 8080
+      targetPortHttpScheme: null
+      traffic:
+      - latestRevision: true
+        weight: 100
+      transport: Auto
+    maxInactiveRevisions: null
+    registries: null
+    runtime: null
+    secrets: null
+    service: null
+  customDomainVerificationId: 451813A3AFF01E1EE7CEF4BDFD282A53866A26F6230B508F8C276424A2754959
+  delegatedIdentities: []
+  environmentId: /subscriptions/2d8d9e9c-8f2a-4dbe-a6c8-0367e15fd061/resourceGroups/Personal.MWhitted/providers/Microsoft.App/managedEnvironments/open-webui-demo
+  eventStreamEndpoint: https://westus2.azurecontainerapps.dev/subscriptions/2d8d9e9c-8f2a-4dbe-a6c8-0367e15fd061/resourceGroups/Personal.MWhitted/containerApps/open-webui/eventstream
+  latestReadyRevisionName: open-webui--6x0s5fw
+  latestRevisionFqdn: open-webui--f8gze68.wonderfulsmoke-f1c0b2f0.westus2.azurecontainerapps.io
+  latestRevisionName: open-webui--f8gze68
+  managedEnvironmentId: /subscriptions/2d8d9e9c-8f2a-4dbe-a6c8-0367e15fd061/resourceGroups/Personal.MWhitted/providers/Microsoft.App/managedEnvironments/open-webui-demo
+  outboundIpAddresses:
+  - 20.115.194.124
+  - 20.115.194.128
+  - 20.115.194.137
+  - 20.115.194.126
+  - 20.29.134.80
+  - 20.29.134.79
+  - 20.29.134.41
+  - 20.29.134.75
+  - 20.29.132.146
+  - 20.29.134.12
+  - 20.69.82.220
+  - 20.69.83.13
+  - 20.69.83.5
+  - 20.69.83.46
+  - 20.115.200.188
+  - 20.115.201.160
+  - 20.115.201.51
+  - 20.115.201.152
+  - 20.115.201.28
+  - 20.115.201.167
+  - 20.99.170.216
+  - 20.99.171.18
+  - 20.99.170.250
+  - 20.99.170.223
+  - 20.99.170.208
+  - 20.99.170.164
+  - 20.99.170.240
+  - 20.99.170.49
+  - 20.99.171.11
+  - 20.99.170.181
+  - 20.3.32.209
+  - 20.3.32.145
+  - 4.246.2.62
+  - 4.246.1.175
+  - 4.246.2.107
+  - 4.246.2.36
+  - 4.246.2.116
+  - 4.246.2.84
+  - 4.246.1.167
+  - 4.246.2.56
+  - 4.246.1.215
+  - 4.246.1.207
+  - 20.3.32.202
+  - 20.3.32.170
+  - 20.3.32.226
+  - 20.3.32.217
+  - 20.3.32.210
+  - 20.3.32.116
+  - 20.3.32.129
+  - 20.3.32.235
+  - 4.155.178.77
+  patchingMode: Automatic
+  provisioningState: Succeeded
+  runningStatus: Running
+  template:
+    containers:
+    - env:
+      - name: DEFAULT_MODELS
+        value: llama3-70b-8192
+      - name: OPENAI_API_BASE_URLS
+        value: https://api.groq.com/openai/v1
+      - name: OPENAI_API_KEYS
+        value: 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
+      - name: PDF_EXTRACT_IMAGES
+        value: 'True'
+      - name: ENABLE_RAG_WEB_SEARCH
+        value: 'True'
+      - name: RAG_WEB_SEARCH_ENGINE
+        value: searxng
+      - name: RAG_WEB_SEARCH_RESULT_COUNT
+        value: '3'
+      - name: RAG_WEB_SEARCH_CONCURRENT_REQUESTS
+        value: '10'
+      - name: SEARXNG_QUERY_URL
+        value: http://open-webui-simple-searxng-1:8080/search?q=<query>
+      - name: ENABLE_RAG_HYBRID_SEARCH
+        value: 'True'
+      - name: USE_TIKA
+        value: 'True'
+      - name: TIKA_SERVER_URL
+        value: http://open-webui-simple-tika-1:9998
+      - name: CONTENT_EXTRACTION_ENGINE
+        value: tika
+      image: ghcr.io/open-webui/open-webui:main
+      imageType: ContainerImage
+      name: open-webui
+      probes: []
+      resources:
+        cpu: 4
+        ephemeralStorage: 8Gi
+        memory: 8Gi
+      volumeMounts:
+      - mountPath: /app/backend/data
+        volumeName: open-webui-config
+      - mountPath: /app/backend/data/docs
+        volumeName: open-webui-docs
+    initContainers: null
+    revisionSuffix: ''
+    scale:
+      maxReplicas: 10
+      minReplicas: 0
+      rules: null
+    serviceBinds: null
+    terminationGracePeriodSeconds: null
+    volumes:
+    - name: open-webui-config
+      storageName: open-webui-config
+      storageType: AzureFile
+    - name: open-webui-docs
+      storageName: open-webui-docs
+      storageType: AzureFile
+  workloadProfileName: Consumption
+resourceGroup: Personal.MWhitted
+systemData:
+  createdAt: '2024-09-27T15:34:39.5409629'
+  createdBy: Matt.Whited@OXFORDCONSULTING1.onmicrosoft.com
+  createdByType: User
+  lastModifiedAt: '2024-09-27T19:49:29.6844669'
+  lastModifiedBy: Matt.Whited@OXFORDCONSULTING1.onmicrosoft.com
+  lastModifiedByType: User
+type: Microsoft.App/containerApps
