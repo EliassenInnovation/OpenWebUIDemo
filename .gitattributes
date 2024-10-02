@@ -1,0 +1,5 @@
+
+* text=auto eol=crlf
+
+*.sh text eol=lf      # Shell scripts use LF
+*.bat text eol=crlf   # Batch scripts use CRLF
